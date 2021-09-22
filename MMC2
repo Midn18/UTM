@@ -1,0 +1,95 @@
+package javaapplication10;
+
+import java.io.IOException;
+import static java.lang.Math.sqrt;
+
+public class JavaApplication10 {
+
+    public static double gama = 0.5;
+    public static double eps = Math.pow(10, -6);
+    public static double delta = 0.06;
+    public static int k = 0;
+    public static double a = 5;
+    public static double b = 3;
+
+    public static double funct;
+    public static double mag;
+
+    public static void main(String[] args) throws IOException {
+
+        double lambda = 1;
+
+        double x = a;
+        double y = b;
+        double zx = functZX(x, y, lambda);
+        double zy = functZY(x, y, lambda);
+        double mag = magnitude(x, y);
+
+        while (magnitude(x, y) > eps) {
+            double magRes = magnitude(x, y);
+            double fx = functia(x, y);
+            System.out.println("k = " + k + "\t x = " + x + "  \t y = " + y + "   \tf(x) = " + fx + "   \tlambda = " + lambda);
+
+            while (true) {
+                zx = functZX(x, y, lambda);
+                zy = functZY(x, y, lambda);
+                double fz = functia(zx, zy);
+
+                if (fz - fx <= -delta * lambda * Math.pow(magnitude(x, y), 2)) {
+                    x = zx;
+                    y = zy;
+                    k++;
+                    break;
+                } else {
+                    System.out.println("zx= " + zx + "    zy = " + zy + "    lambda = " + lambda);
+                    System.out.println("Nu se satisface conditia");
+                    lambda *= gama;
+                }
+            }
+        }
+    }
+
+    public static double functia(double x, double y) throws IOException {
+
+        double funct;
+
+        return funct = 5 * Math.pow(x, 2) + 3 * x * y + 3 * Math.pow(y, 2) - 5 * x - 3 * y;
+    }
+
+    public static double derivX(double x, double y) throws IOException {
+
+        double derX;
+
+        return derX = 10 * x + 3 * y - 5;
+    }
+
+    public static double derivY(double x, double y) throws IOException {
+
+        double derY;
+
+        return derY = 3 * x + 6 * y - 3;
+    }
+
+    public static double magnitude(double x, double y) throws IOException {
+
+        double mag;
+
+        return mag = sqrt(Math.pow(derivX(x, y), 2) + Math.pow(derivY(x, y), 2));
+    }
+
+    public static double functZX(double x, double y, double lambda) throws IOException {
+
+        double zx;
+
+        return zx = x - lambda * derivX(x, y);
+
+    }
+
+    public static double functZY(double x, double y, double lambda) throws IOException {
+
+        double zy;
+
+        return zy = y - lambda * derivY(x, y);
+    }
+
+}
